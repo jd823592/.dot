@@ -1,0 +1,22 @@
+source "GPG_TTY=`tty` gpg -dq ~/.mutt/d3s.mff.cuni.cz.pwds.gpg |"
+
+set hostname="d3s.mff.cuni.cz"
+set imap_user="daniel"
+set imap_pass=$my_imap_pass
+set folder="imaps://daniel@d3s.mff.cuni.cz:993"
+set spoolfile="imaps://daniel@d3s.mff.cuni.cz:993"
+set record="imaps://daniel@d3s.mff.cuni.cz:993/Sent"
+set postponed="imaps://daniel@d3s.mff.cuni.cz:993/Drafts"
+
+mailboxes "="
+
+set realname="Jakub Daniel"
+set from="jakub.daniel@d3s.mff.cuni.cz"
+set smtp_pass=$my_smtp_pass
+set smtp_url="smtps://daniel@d3s.mff.cuni.cz:465"
+
+set pgp_sign_as="daniel@d3s.mff.cuni.cz"
+
+set alias_file="~/.mutt/d3s.mff.cuni.cz.aliases"
+set sort_alias=alias
+source $alias_file

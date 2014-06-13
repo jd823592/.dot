@@ -1,0 +1,7 @@
+[init]
+#    templatedir = ~/.gittemplate/
+[user]
+	email = daniel@d3s.mff.cuni.cz
+	name = Jakub Daniel
+[push]
+	default = simple
