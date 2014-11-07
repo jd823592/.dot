@@ -1,30 +1,16 @@
 PS1="\[\e[01;32m\]\u@\h\[\e[01;34m\] \w \$\[\e[00m\] "
 
-if [ $TERM = linux ]
+GPG_AGENT_INFO_FILE=~/.gpg-agent-info
+
+if [ -f $GPG_AGENT_INFO_FILE ] || tty -s && ! gpg-agent -q
 then
-    unicode_start ter-v16b
+    gpg-agent --quiet --daemon --enable-ssh-support --write-env-file $GPG_AGENT_INFO_FILE
 fi
 
-if [ -f ~/.gpg-agent-info ]
-then
-    . ~/.gpg-agent-info
-    export GPG_AGENT_INFO
-    export SSH_AUTH_SOCK
-    export GPG_TTY=`tty`
-fi
-
-if tty -s && ! gpg-agent -q
-then
-    gpg-agent --quiet --daemon --enable-ssh-support --write-env-file ~/.gpg-agent-info
-fi
-
-if [ -f ~/.gpg-agent-info ]
-then
-    . ~/.gpg-agent-info
-    export GPG_AGENT_INFO
-    export SSH_AUTH_SOCK
-    export GPG_TTY=`tty`
-fi
+. $GPG_AGENT_INFO_FILE
+export GPG_AGENT_INFO
+export SSH_AUTH_SOCK
+export GPG_TTY=`tty`
 
 clear
 
@@ -32,12 +18,6 @@ export PATH="${PATH}:/home/jakub/bin"
 
 if tty -s && [ -z "$TMUX" ]
 then
-    #if tmux has
-    #then
-    #    exec tmux attach
-    #else
-    #    exec tmux new
-    #fi
     exec tmux attach
 fi
 

@@ -19,10 +19,6 @@ set imap_keepalive=300
 set header_cache=/var/tmp/.mutt
 
 macro index c '<change-folder>=<tab><tab><tab>'
-macro index <f2> '<sync-mailbox><enter-command>source ~/.mutt/gmail.com<enter><change-folder>!<enter>'
-macro index <f3> '<sync-mailbox><enter-command>source ~/.mutt/d3s.mff.cuni.cz<enter><change-folder>!<enter>'
-
-#source ~/.mutt/d3s.mff.cuni.cz
 
 set pgp_use_gpg_agent="yes"
 set pgp_decode_command="gpg --use-agent --no-verbose --batch --output - %f"

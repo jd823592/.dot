@@ -1,8 +1,9 @@
 set laststatus=2
 
 set encoding=utf-8
-"set ffs=unix
+set ffs=unix
 
+set noexpandtab
 set expandtab
 set smarttab
 set shiftwidth=4
@@ -40,9 +41,9 @@ map <Down> <Nop>
 
 "set clipboard=unnamed
 
-highlight Comment ctermfg=magenta
-highlight ExtraWhitespace ctermfg=white ctermbg=red
+"highlight Comment ctermfg=magenta
+"highlight ExtraWhitespace ctermfg=white ctermbg=red
 
-match ExtraWhitespace /\s\+$\|^\s*\t/
+"match ExtraWhitespace /\s\+$\|^\s*\t/
 
 "set spell spelllang=en_gb
