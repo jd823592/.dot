@@ -1,0 +1,63 @@
+#!/bin/sh
+
+IN="LVDS-0"
+
+sh -x -c "xrandr --output ${IN} --off"
+
+#xset dpms force on
+xset -dpms
+#xset s off
+
+EXT=$(cat <<END
+$(xrandr | awk '{ if ($1 != "'${IN}'" && $2 == "connected") print $1 }')
+END
+)
+EXTNUM=$(printf "${EXT}" | awk 'BEGIN {count = 0} /.+/ {count = count + 1} END {print count}')
+
+for MONITOR in ${EXT}
+do
+    sh -x -c "xrandr --output ${MONITOR} --off"
+done
+
+PRIMARY=${IN}
+SECONDARY=${IN}
+
+if [ ${EXTNUM} -gt 0 ]
+then
+    PRIMARY=$(cat <<END | head -n 1
+${EXT}
+END
+)
+    SECONDARY=${PRIMARY}
+
+    if [ ${EXTNUM} -gt 1 ]
+    then
+        SECONDARY=$(cat <<END | head -n 2 | tail -n 1
+${EXT}
+END
+)
+    fi
+fi
+
+PRIMARYRES=$(xrandr | awk 'BEGIN {section = 0} /^\w/ {section  = ($1 == "'${PRIMARY}'")} /^\W.*\+/ {if (section) print $1}')
+SECONDARYRES=$(xrandr | awk 'BEGIN {section = 0} /^\w/ {section  = ($1 == "'${SECONDARY}'")} /^\W.*\+/ {if (section) print $1}')
+
+COMMAND="xrandr"
+
+COMMAND+=" --output ${PRIMARY} --primary --mode ${PRIMARYRES} --panning ${PRIMARYRES}"
+
+if [ x${SECONDARY} = x${PRIMARY} ]
+then
+    ln -sf ~/.dwm/screen0.png ~/.dwm/background.png
+else
+    COMMAND+=" --output ${SECONDARY} --right-of ${PRIMARY} --mode ${SECONDARYRES}"
+    if [ x${SECONDARY} != x${IN} ]
+    then
+        COMMAND+=" --rotate left"
+    fi
+    #sh -x -c "convert +append ~/.dwm/screen0.png ~/.dwm/screen1.png ~/.dwm/background.png"
+    #ln -sf ~/.dwm/screen0+1.black.png ~/.dwm/background.png
+fi
+
+sh -x -c "$COMMAND"
+sh -x -c "feh --no-fehbg --bg-scale --no-xinerama ~/.dwm/background.png"

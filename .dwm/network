@@ -1,0 +1,5 @@
+#!/bin/sh
+
+NETWORK=$(grep -l up /sys/class/net/*/operstate | sed 's:^/sys/class/net/\(.*\)/operstate$:\1:')
+
+printf "%s" ${NETWORK:-none}

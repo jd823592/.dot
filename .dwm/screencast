@@ -1,0 +1,13 @@
+#!/bin/sh
+
+WININFO=`xwininfo 2>&1`
+
+W=`echo "$WININFO" | sed -n 's/ *Width: *\(.*\)/\1/p'`
+H=`echo "$WININFO" | sed -n 's/ *Height: *\(.*\)/\1/p'`
+X=`echo "$WININFO" | sed -n 's/ *Absolute upper-left X: *\(.*\)/\1/p'`
+Y=`echo "$WININFO" | sed -n 's/ *Absolute upper-left Y: *\(.*\)/\1/p'`
+
+CODEC=libx264
+CODEC=libxvid
+
+ffmpeg -f x11grab -r 15 -s "$W"x"$H" -i :0.0+"$X","$Y" -vcodec $CODEC $1

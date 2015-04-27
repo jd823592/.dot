@@ -1,0 +1,19 @@
+#!/bin/sh
+
+source ~/.profile
+
+setxkbmap gb
+
+~/.dwm/randr > ~/.dwm/log 2>&1
+
+while true
+do
+    NETWORK=`~/.dwm/network`
+    BATTERY=`~/.dwm/battery`
+    DATE=`date "+[%a] %F %T"`
+    LAYOUT=`setxkbmap -query | awk '/^layout:/ {print $2}'`
+    DWM_STATUS="net: $NETWORK bat: $BATTERY $LAYOUT $DATE"
+
+    xsetroot -name "$DWM_STATUS"
+    sleep 1
+done &

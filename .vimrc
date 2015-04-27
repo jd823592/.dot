@@ -1,3 +1,5 @@
+set background=dark
+
 set laststatus=2
 
 set encoding=utf-8
