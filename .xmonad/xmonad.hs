@@ -3,8 +3,11 @@ import XMonad.Config.Desktop
 import XMonad.Hooks.DynamicLog
 import XMonad.Util.EZConfig
 import XMonad.Prompt
+import XMonad.Prompt.AppLauncher
+import XMonad.Prompt.Man
 import XMonad.Prompt.Shell
 import XMonad.Prompt.XMonad
+import XMonad.Actions.Search
 
 import qualified Data.Map as Map
 
@@ -40,6 +43,9 @@ myXPConfig = let c = defaultXPConfig in XPC
 myConfig conf@(XConfig {XMonad.modMask = modMask}) = conf `additionalKeys`
     [ ((XMonad.modMask conf .|. shiftMask, xK_l), spawn "slock")
     , ((XMonad.modMask conf .|. shiftMask, xK_Return), spawn $ (XMonad.terminal conf) ++ " -e bash --rcfile ~/.profile")
-    , ((XMonad.modMask conf, xK_p), shellPrompt myXPConfig)
+    , ((XMonad.modMask conf, xK_g), promptSearchBrowser myXPConfig "/usr/bin/firefox-bin" google)
+    , ((XMonad.modMask conf, xK_t), launchApp myXPConfig "/usr/bin/firefox-bin")
     , ((XMonad.modMask conf, xK_l), xmonadPrompt myXPConfig)
+    , ((XMonad.modMask conf, xK_p), shellPrompt myXPConfig)
+    , ((XMonad.modMask conf, xK_F1), manPrompt myXPConfig)
     ]
