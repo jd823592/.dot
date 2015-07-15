@@ -15,9 +15,31 @@ baseConfig = desktopConfig
     , modMask  = mod1Mask
     }
 
+myXPConfig = let c = defaultXPConfig in XPC
+    { font = "-*-Fixed-Bold-R-Normal-*-13-*-*-*-*-*-*-*"
+    , bgColor = "black"
+    , fgColor = fgColor c
+    , fgHLight = fgHLight c
+    , bgHLight = fgHLight c
+    , borderColor = "red"
+    , promptBorderWidth = promptBorderWidth c
+    , position = Top
+    , alwaysHighlight = alwaysHighlight c
+    , height = height c
+    , historySize = historySize c
+    , historyFilter = historyFilter c
+    , promptKeymap = promptKeymap c
+    , completionKey = completionKey c
+    , changeModeKey = changeModeKey c
+    , defaultText = defaultText c
+    , autoComplete = autoComplete c
+    , showCompletionOnTab = showCompletionOnTab c
+    , searchPredicate = searchPredicate c
+    }
+
 myConfig conf@(XConfig {XMonad.modMask = modMask}) = conf `additionalKeys`
     [ ((XMonad.modMask conf .|. shiftMask, xK_l), spawn "slock")
     , ((XMonad.modMask conf .|. shiftMask, xK_Return), spawn $ (XMonad.terminal conf) ++ " -e bash --rcfile ~/.profile")
-    , ((XMonad.modMask conf, xK_p), shellPrompt defaultXPConfig)
-    , ((XMonad.modMask conf, xK_l), xmonadPrompt defaultXPConfig)
+    , ((XMonad.modMask conf, xK_p), shellPrompt myXPConfig)
+    , ((XMonad.modMask conf, xK_l), xmonadPrompt myXPConfig)
     ]
