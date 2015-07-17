@@ -43,6 +43,7 @@ myXPConfig = let c = defaultXPConfig in XPC
 myConfig conf@(XConfig {XMonad.modMask = modMask}) = conf `additionalKeys`
     [ ((XMonad.modMask conf .|. shiftMask, xK_l), spawn "slock")
     , ((XMonad.modMask conf .|. shiftMask, xK_Return), spawn $ (XMonad.terminal conf) ++ " -e bash --rcfile ~/.profile")
+    , ((XMonad.modMask conf .|. shiftMask, xK_m), spawn $ (XMonad.terminal conf) ++ " -e bash --rcfile ~/.profile -c \"mutt -e 'source ~/.mutt/default'\"")
     , ((XMonad.modMask conf, xK_g), promptSearchBrowser myXPConfig "/usr/bin/firefox-bin" google)
     , ((XMonad.modMask conf, xK_t), launchApp myXPConfig "/usr/bin/firefox-bin")
     , ((XMonad.modMask conf, xK_l), xmonadPrompt myXPConfig)
