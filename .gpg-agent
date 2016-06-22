@@ -11,3 +11,5 @@ source $GPG_AGENT_INFO_FILE
 export GPG_AGENT_INFO
 export SSH_AUTH_SOCK
 export GPG_TTY=`tty`
+
+#echo GPG agent running on $GPG_TTY

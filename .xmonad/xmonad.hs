@@ -1,52 +1,30 @@
 import XMonad
-import XMonad.Config.Desktop
+import Data.Monoid
+import System.Exit
 import XMonad.Hooks.DynamicLog
-import XMonad.Util.EZConfig
-import XMonad.Prompt
-import XMonad.Prompt.AppLauncher
-import XMonad.Prompt.Man
-import XMonad.Prompt.Shell
-import XMonad.Prompt.XMonad
-import XMonad.Actions.Search
+import XMonad.Hooks.ManageDocks
 
-import qualified Data.Map as Map
+import qualified XMonad.StackSet as W
+import qualified Data.Map        as M
 
-main = xmonad =<< xmobar (myConfig baseConfig)
+myModMask = mod1Mask
 
-baseConfig = desktopConfig
-    { terminal = "st"
-    , modMask  = mod1Mask
+myTerminal = "st"
+
+myBorderWidth = 0
+
+myManageHook = composeAll [manageDocks]
+
+myLayoutHook = avoidStruts tall where
+    tall = Tall 1 (3/100) (1/2)
+
+myHandleEventHook = docksEventHook
+
+main = xmonad defaultConfig
+    { terminal           = myTerminal
+    , modMask            = myModMask
+    , manageHook         = myManageHook
+    , layoutHook         = myLayoutHook
+    , handleEventHook    = myHandleEventHook
+    , borderWidth        = myBorderWidth
     }
-
-myXPConfig = let c = defaultXPConfig in XPC
-    { font = "-*-Fixed-Bold-R-Normal-*-13-*-*-*-*-*-*-*"
-    , bgColor = "black"
-    , fgColor = fgColor c
-    , fgHLight = fgHLight c
-    , bgHLight = fgHLight c
-    , borderColor = "red"
-    , promptBorderWidth = promptBorderWidth c
-    , position = Top
-    , alwaysHighlight = alwaysHighlight c
-    , height = height c
-    , historySize = historySize c
-    , historyFilter = historyFilter c
-    , promptKeymap = promptKeymap c
-    , completionKey = completionKey c
-    , changeModeKey = changeModeKey c
-    , defaultText = defaultText c
-    , autoComplete = autoComplete c
-    , showCompletionOnTab = showCompletionOnTab c
-    , searchPredicate = searchPredicate c
-    }
-
-myConfig conf@(XConfig {XMonad.modMask = modMask}) = conf `additionalKeys`
-    [ ((XMonad.modMask conf .|. shiftMask, xK_l), spawn "slock")
-    , ((XMonad.modMask conf .|. shiftMask, xK_Return), spawn $ (XMonad.terminal conf) ++ " -e bash --rcfile ~/.profile")
-    , ((XMonad.modMask conf .|. shiftMask, xK_m), spawn $ (XMonad.terminal conf) ++ " -e bash --rcfile ~/.profile -c \"mutt -e 'source ~/.mutt/default'\"")
-    , ((XMonad.modMask conf, xK_g), promptSearchBrowser myXPConfig "/usr/bin/firefox-bin" google)
-    , ((XMonad.modMask conf, xK_t), launchApp myXPConfig "/usr/bin/firefox-bin")
-    , ((XMonad.modMask conf, xK_l), xmonadPrompt myXPConfig)
-    , ((XMonad.modMask conf, xK_p), shellPrompt myXPConfig)
-    , ((XMonad.modMask conf, xK_F1), manPrompt myXPConfig)
-    ]
